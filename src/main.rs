@@ -17,7 +17,7 @@ fn main() {
     let local_night = Local.ymd(local_now.year(), local_now.month(), local_now.day()).and_hms(18, 0, 0);
 
     if local_now >= local_morning && local_now < local_night {
-        execute_redshift("4500");
+        execute_redshift("6500");
     } else {
         execute_redshift("1900");
     }
