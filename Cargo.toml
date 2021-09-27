@@ -1,5 +1,9 @@
 [package]
-name = "rust-chrono-playground"
+name = "redshiftctl"
+description = "A simple program to control redshift automatically"
+license = "MIT"
+authors = ["Jeremy Reed <reeje76@gmail.com>",]
+repository = "https://github.com/jeremymreed/redshiftctl"
 version = "0.1.0"
 edition = "2018"
 
