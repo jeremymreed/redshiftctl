@@ -1,20 +1,24 @@
+use std::process::Command;
 use chrono::prelude::*;
 
+fn execute_redshift(temp: &str) {
+    let status = Command::new("/usr/bin/redshift")
+                         .args(["-P", "-O", temp])
+                         .status()
+                         .expect("Failed to execute redshift!");
+
+    println!("Redshift status: {}", status);
+}
+
 fn main() {
-    let utc_now: DateTime<Utc> = Utc::now();
     let local_now: DateTime<Local> = Local::now();
 
     let local_morning = Local.ymd(local_now.year(), local_now.month(), local_now.day()).and_hms(6, 0, 0);
     let local_night = Local.ymd(local_now.year(), local_now.month(), local_now.day()).and_hms(18, 0, 0);
 
-    println!("utc_now: {}", utc_now);
-    println!("local_now: {}", local_now);
-    println!("local_morning: {}", local_morning);
-    println!("local_night: {}", local_night);
-
     if local_now >= local_morning && local_now < local_night {
-        println!("It's daytime!");
+        execute_redshift("4500");
     } else {
-        println!("It's nighttime!");
+        execute_redshift("1900");
     }
 }
