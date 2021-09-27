@@ -47,8 +47,8 @@ dependencies = [
 ]
 
 [[package]]
-name = "rust-chrono-playground"
-version = "0.1.0"
+name = "redshiftctl"
+version = "1.0.0"
 dependencies = [
  "chrono",
 ]
