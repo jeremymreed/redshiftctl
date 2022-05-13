@@ -13,11 +13,6 @@ const DAY_TEMP: i64 = 6500;
 const EVENING_TEMP: i64 = 3000;
 const NIGHT_TEMP: i64 = 1900;
 
-// Temporary.. For now.
-const NIGHT_TO_DAY_TEMP: i64 = 2200;
-const DAY_TO_EVENING_TEMP: i64 = 5000;
-const EVENING_TO_NIGHT_TEMP: i64 = 2200;
-
 pub struct TestPair {
     pub time: DateTime<Local>,
     pub expected: i64,
@@ -164,7 +159,7 @@ mod tests {
                         NIGHT_TO_DAY_START.1 + 30,
                         NIGHT_TO_DAY_START.2,
                     ),
-                    expected: NIGHT_TO_DAY_TEMP,
+                    expected: -1,
                 },
                 // Day.
                 TestPair {
@@ -182,7 +177,7 @@ mod tests {
                         DAY_TO_EVENING_START.1 + 30,
                         DAY_TO_EVENING_START.2,
                     ),
-                    expected: DAY_TO_EVENING_TEMP,
+                    expected: -1,
                 },
                 // Evening.
                 TestPair {
@@ -200,7 +195,7 @@ mod tests {
                         EVENING_TO_NIGHT_START.1 + 30,
                         EVENING_TO_NIGHT_START.2,
                     ),
-                    expected: EVENING_TO_NIGHT_TEMP,
+                    expected: -1,
                 },
             ];
         }
