@@ -18,6 +18,11 @@ const NIGHT_TO_DAY_TEMP: i64 = 2200;
 const DAY_TO_EVENING_TEMP: i64 = 5000;
 const EVENING_TO_NIGHT_TEMP: i64 = 2200;
 
+struct TestPair {
+    time: DateTime<Local>,
+    expected: i64
+}
+
 fn execute_redshift(temp: &i64) {
     let temp_str = temp.to_string();
 
@@ -108,31 +113,70 @@ mod tests {
     mod get_color_temperature_tests {
         use super::*;
 
+        fn get_test_start_times() -> Vec<TestPair> {
+            return vec![
+                // Night: Late night.
+                TestPair{ time: Local.ymd(2022, 5, 20).and_hms(NIGHT_START.0, NIGHT_START.1 + 30, NIGHT_START.2), expected: NIGHT_TEMP },
+                // Night: Early morning.
+                TestPair{ time: Local.ymd(2022, 5, 20).and_hms(NIGHT_TO_DAY_START.0 - 1, NIGHT_TO_DAY_START.1, NIGHT_TO_DAY_START.0), expected: NIGHT_TEMP },
+                // Night to Day.
+                TestPair{ time: Local.ymd(2022, 5, 20).and_hms(NIGHT_TO_DAY_START.0, NIGHT_TO_DAY_START.1 + 30, NIGHT_TO_DAY_START.2), expected: NIGHT_TO_DAY_TEMP },
+                // Day.
+                TestPair{ time: Local.ymd(2022, 5, 20).and_hms(DAY_START.0, DAY_START.1 + 30, DAY_START.2), expected: DAY_TEMP },
+                // Day to Evening.
+                TestPair{ time: Local.ymd(2022, 5, 20).and_hms(DAY_TO_EVENING_START.0, DAY_TO_EVENING_START.1 + 30, DAY_TO_EVENING_START.2), expected: DAY_TO_EVENING_TEMP },
+                // Evening.
+                TestPair{ time: Local.ymd(2022, 5, 20).and_hms(EVENING_START.0, EVENING_START.1 + 30, EVENING_START.2), expected: EVENING_TEMP },
+                // Evening to Night.
+                TestPair{ time: Local.ymd(2022, 5, 20).and_hms(EVENING_TO_NIGHT_START.0, EVENING_TO_NIGHT_START.1 + 30, EVENING_TO_NIGHT_START.2), expected: EVENING_TO_NIGHT_TEMP },
+            ];
+        }
+
+        fn run_test_phase(index: usize) {
+            let times = get_test_start_times();
+            let test_values = &times[index];
+
+            println!("test_values.time: {}", test_values.time);
+            println!("Expected value: {}", test_values.expected);
+
+            let actual = get_color_temperature(test_values.time);
+
+            assert_eq!(test_values.expected, actual);
+        }
+
         #[test]
         fn should_return_night_temp_at_late_night() {
-            let time = Local.ymd(2022, 5, 20).and_hms(23, 0, 0);
-
-            let actual = get_color_temperature(time);
-
-            assert_eq!(NIGHT_TEMP, actual);
+            run_test_phase(0);
         }
 
         #[test]
         fn should_return_night_temp_at_early_morning() {
-            let time = Local.ymd(2022, 5, 20).and_hms(2, 0, 0);
-
-            let actual = get_color_temperature(time);
-
-            assert_eq!(NIGHT_TEMP, actual);
+            run_test_phase(1);
         }
 
         #[test]
-        fn should_return_night_to_day_temp_() {
-            let time = Local.ymd(2022, 5, 20).and_hms(6, 30, 0);
+        fn should_return_night_to_day_temp() {
+            run_test_phase(2);
+        }
 
-            let actual = get_color_temperature(time);
+        #[test]
+        fn should_return_day_temp() {
+            run_test_phase(3);
+        }
 
-            assert_eq!(NIGHT_TO_DAY_TEMP, actual);
+        #[test]
+        fn should_return_day_to_evening_temp() {
+            run_test_phase(4);
+        }
+
+        #[test]
+        fn should_return_evening_temp() {
+            run_test_phase(5);
+        }
+
+        #[test]
+        fn should_return_evening_to_night_temp() {
+            run_test_phase(6);
         }
     }
 }
