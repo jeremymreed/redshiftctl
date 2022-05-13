@@ -53,6 +53,10 @@ fn interpolate_color_temperature(
         panic!("start_time cannot be the same as end_time!");
     }
 
+    if start_time > end_time {
+        panic!("start_time cannot be after end_time!");
+    }
+
     let result = (start_temp * (end_time - current_time) + end_temp * (current_time - start_time))
         / (end_time - start_time);
     return result;
