@@ -159,7 +159,7 @@ mod tests {
                         NIGHT_TO_DAY_START.1 + 30,
                         NIGHT_TO_DAY_START.2,
                     ),
-                    expected: -1,
+                    expected: 4200,
                 },
                 // Day.
                 TestPair {
@@ -177,7 +177,7 @@ mod tests {
                         DAY_TO_EVENING_START.1 + 30,
                         DAY_TO_EVENING_START.2,
                     ),
-                    expected: -1,
+                    expected: 4750,
                 },
                 // Evening.
                 TestPair {
@@ -195,7 +195,7 @@ mod tests {
                         EVENING_TO_NIGHT_START.1 + 30,
                         EVENING_TO_NIGHT_START.2,
                     ),
-                    expected: -1,
+                    expected: 2725,
                 },
             ];
         }
