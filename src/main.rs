@@ -50,11 +50,17 @@ fn generate_datetime(
 fn interpolate_color_temperature(
     start_time: i64,
     end_time: i64,
-    current_time: i64,
     start_temp: i64,
     end_temp: i64,
-) {
-    unimplemented!();
+    current_time: i64,
+) -> i64 {
+    if start_time == end_time {
+        panic!("start_time cannot be the same as end_time!");
+    }
+
+    let result = (start_temp * (end_time - current_time) + end_temp * (current_time - start_time))
+        / (end_time - start_time);
+    return result;
 }
 
 fn get_color_temperature(current_time: DateTime<Local>) -> i64 {
@@ -74,7 +80,13 @@ fn get_color_temperature(current_time: DateTime<Local>) -> i64 {
     } else if current_time > night_to_day_start && current_time < day_start {
         // night_to_day.
         println!("night_to_day");
-        return NIGHT_TO_DAY_TEMP;
+        return interpolate_color_temperature(
+            night_to_day_start.timestamp(),
+            day_start.timestamp(),
+            NIGHT_TEMP,
+            DAY_TEMP,
+            current_time.timestamp(),
+        );
     } else if current_time >= day_start && current_time <= day_to_evening_start {
         // day.
         println!("day");
@@ -82,7 +94,13 @@ fn get_color_temperature(current_time: DateTime<Local>) -> i64 {
     } else if current_time > day_to_evening_start && current_time < evening_start {
         // day_to_evening.
         println!("day_to_evening");
-        return DAY_TO_EVENING_TEMP;
+        return interpolate_color_temperature(
+            day_to_evening_start.timestamp(),
+            evening_start.timestamp(),
+            DAY_TEMP,
+            EVENING_TEMP,
+            current_time.timestamp(),
+        );
     } else if current_time >= evening_start && current_time <= evening_to_night_start {
         // evening.
         println!("evening");
@@ -90,7 +108,13 @@ fn get_color_temperature(current_time: DateTime<Local>) -> i64 {
     } else if current_time > evening_to_night_start && current_time < night_start {
         // evening_to_night.
         println!("evening_to_night");
-        return EVENING_TO_NIGHT_TEMP;
+        return interpolate_color_temperature(
+            evening_to_night_start.timestamp(),
+            night_start.timestamp(),
+            EVENING_TEMP,
+            NIGHT_TEMP,
+            current_time.timestamp(),
+        );
     } else {
         // Shouldn't ever get here.
         println!("invalid!");
