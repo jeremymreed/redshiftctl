@@ -74,7 +74,6 @@ fn get_color_temperature(current_time: DateTime<Local>) -> i64 {
         return NIGHT_TEMP;
     } else if current_time > night_to_day_start && current_time < day_start {
         // night_to_day.
-        println!("night_to_day");
         return interpolate_color_temperature(
             night_to_day_start.timestamp(),
             day_start.timestamp(),
@@ -84,11 +83,9 @@ fn get_color_temperature(current_time: DateTime<Local>) -> i64 {
         );
     } else if current_time >= day_start && current_time <= day_to_evening_start {
         // day.
-        println!("day");
         return DAY_TEMP;
     } else if current_time > day_to_evening_start && current_time < evening_start {
         // day_to_evening.
-        println!("day_to_evening");
         return interpolate_color_temperature(
             day_to_evening_start.timestamp(),
             evening_start.timestamp(),
@@ -98,11 +95,9 @@ fn get_color_temperature(current_time: DateTime<Local>) -> i64 {
         );
     } else if current_time >= evening_start && current_time <= evening_to_night_start {
         // evening.
-        println!("evening");
         return EVENING_TEMP;
     } else if current_time > evening_to_night_start && current_time < night_start {
         // evening_to_night.
-        println!("evening_to_night");
         return interpolate_color_temperature(
             evening_to_night_start.timestamp(),
             night_start.timestamp(),
@@ -112,7 +107,6 @@ fn get_color_temperature(current_time: DateTime<Local>) -> i64 {
         );
     } else {
         // Shouldn't ever get here.
-        println!("invalid!");
         panic!("Invalid time, did not match a phase/transition as expected!");
     }
 }
@@ -203,9 +197,6 @@ mod tests {
         fn run_test_phase(index: usize) {
             let times = get_test_start_times();
             let test_values = &times[index];
-
-            println!("test_values.time: {}", test_values.time);
-            println!("Expected value: {}", test_values.expected);
 
             let actual = get_color_temperature(test_values.time);
 
