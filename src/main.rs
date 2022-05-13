@@ -18,9 +18,9 @@ const NIGHT_TO_DAY_TEMP: i64 = 2200;
 const DAY_TO_EVENING_TEMP: i64 = 5000;
 const EVENING_TO_NIGHT_TEMP: i64 = 2200;
 
-struct TestPair {
-    time: DateTime<Local>,
-    expected: i64
+pub struct TestPair {
+    pub time: DateTime<Local>,
+    pub expected: i64,
 }
 
 fn execute_redshift(temp: &i64) {
