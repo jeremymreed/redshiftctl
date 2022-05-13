@@ -116,19 +116,68 @@ mod tests {
         fn get_test_start_times() -> Vec<TestPair> {
             return vec![
                 // Night: Late night.
-                TestPair{ time: Local.ymd(2022, 5, 20).and_hms(NIGHT_START.0, NIGHT_START.1 + 30, NIGHT_START.2), expected: NIGHT_TEMP },
+                TestPair {
+                    time: Local.ymd(2022, 5, 20).and_hms(
+                        NIGHT_START.0,
+                        NIGHT_START.1 + 30,
+                        NIGHT_START.2,
+                    ),
+                    expected: NIGHT_TEMP,
+                },
                 // Night: Early morning.
-                TestPair{ time: Local.ymd(2022, 5, 20).and_hms(NIGHT_TO_DAY_START.0 - 1, NIGHT_TO_DAY_START.1, NIGHT_TO_DAY_START.0), expected: NIGHT_TEMP },
+                TestPair {
+                    time: Local.ymd(2022, 5, 20).and_hms(
+                        NIGHT_TO_DAY_START.0 - 1,
+                        NIGHT_TO_DAY_START.1,
+                        NIGHT_TO_DAY_START.0,
+                    ),
+                    expected: NIGHT_TEMP,
+                },
                 // Night to Day.
-                TestPair{ time: Local.ymd(2022, 5, 20).and_hms(NIGHT_TO_DAY_START.0, NIGHT_TO_DAY_START.1 + 30, NIGHT_TO_DAY_START.2), expected: NIGHT_TO_DAY_TEMP },
+                TestPair {
+                    time: Local.ymd(2022, 5, 20).and_hms(
+                        NIGHT_TO_DAY_START.0,
+                        NIGHT_TO_DAY_START.1 + 30,
+                        NIGHT_TO_DAY_START.2,
+                    ),
+                    expected: NIGHT_TO_DAY_TEMP,
+                },
                 // Day.
-                TestPair{ time: Local.ymd(2022, 5, 20).and_hms(DAY_START.0, DAY_START.1 + 30, DAY_START.2), expected: DAY_TEMP },
+                TestPair {
+                    time: Local.ymd(2022, 5, 20).and_hms(
+                        DAY_START.0,
+                        DAY_START.1 + 30,
+                        DAY_START.2,
+                    ),
+                    expected: DAY_TEMP,
+                },
                 // Day to Evening.
-                TestPair{ time: Local.ymd(2022, 5, 20).and_hms(DAY_TO_EVENING_START.0, DAY_TO_EVENING_START.1 + 30, DAY_TO_EVENING_START.2), expected: DAY_TO_EVENING_TEMP },
+                TestPair {
+                    time: Local.ymd(2022, 5, 20).and_hms(
+                        DAY_TO_EVENING_START.0,
+                        DAY_TO_EVENING_START.1 + 30,
+                        DAY_TO_EVENING_START.2,
+                    ),
+                    expected: DAY_TO_EVENING_TEMP,
+                },
                 // Evening.
-                TestPair{ time: Local.ymd(2022, 5, 20).and_hms(EVENING_START.0, EVENING_START.1 + 30, EVENING_START.2), expected: EVENING_TEMP },
+                TestPair {
+                    time: Local.ymd(2022, 5, 20).and_hms(
+                        EVENING_START.0,
+                        EVENING_START.1 + 30,
+                        EVENING_START.2,
+                    ),
+                    expected: EVENING_TEMP,
+                },
                 // Evening to Night.
-                TestPair{ time: Local.ymd(2022, 5, 20).and_hms(EVENING_TO_NIGHT_START.0, EVENING_TO_NIGHT_START.1 + 30, EVENING_TO_NIGHT_START.2), expected: EVENING_TO_NIGHT_TEMP },
+                TestPair {
+                    time: Local.ymd(2022, 5, 20).and_hms(
+                        EVENING_TO_NIGHT_START.0,
+                        EVENING_TO_NIGHT_START.1 + 30,
+                        EVENING_TO_NIGHT_START.2,
+                    ),
+                    expected: EVENING_TO_NIGHT_TEMP,
+                },
             ];
         }
 
