@@ -1,7 +1,12 @@
-use std::process::Command;
 use chrono::prelude::*;
+use std::process::Command;
 
+const NIGHT_TO_DAY_START: (u32, u32, u32) = (6, 0, 0);
 const DAY_START: (u32, u32, u32) = (7, 0, 0);
+const DAY_TO_EVENING_START: (u32, u32, u32) = (17, 0, 0);
+const EVENING_START: (u32, u32, u32) = (18, 0, 0);
+const EVENING_TO_NIGHT_START: (u32, u32, u32) = (20, 0, 0);
+const NIGHT_START: (u32, u32, u32) = (22, 0, 0);
 
 // Color temperature of the static phases.
 const DAY_TEMP: i64 = 6500;
@@ -17,25 +22,44 @@ fn execute_redshift(temp: &i64) {
     let temp_str = temp.to_string();
 
     let status = Command::new("/usr/bin/redshift")
-                         .args(["-P", "-O", &temp_str])
-                         .status()
-                         .expect("Failed to execute redshift!");
+        .args(["-P", "-O", &temp_str])
+        .status()
+        .expect("Failed to execute redshift!");
 
     println!("Redshift status: {}", status);
 }
 
-fn interpolate_color_temperature(start_time: i64, end_time: i64, current_time: i64, start_temp: i64, end_temp: i64) {
+fn generate_datetime(
+    current_time: DateTime<Local>,
+    start_time: (u32, u32, u32),
+) -> DateTime<Local> {
+    return Local
+        .ymd(
+            current_time.year(),
+            current_time.month(),
+            current_time.day(),
+        )
+        .and_hms(start_time.0, start_time.1, start_time.2);
+}
+
+fn interpolate_color_temperature(
+    start_time: i64,
+    end_time: i64,
+    current_time: i64,
+    start_temp: i64,
+    end_temp: i64,
+) {
     unimplemented!();
 }
 
 fn get_color_temperature(current_time: DateTime<Local>) -> i64 {
     // Start times.
-    let night_to_day_start = Local.ymd(current_time.year(), current_time.month(), current_time.day()).and_hms(6, 0, 0);
-    let day_start = Local.ymd(current_time.year(), current_time.month(), current_time.day()).and_hms(DAY_START.0, DAY_START.1, DAY_START.2);
-    let day_to_evening_start = Local.ymd(current_time.year(), current_time.month(), current_time.day()).and_hms(17, 0, 0);
-    let evening_start =Local.ymd(current_time.year(), current_time.month(), current_time.day()).and_hms(18, 0, 0); 
-    let evening_to_night_start = Local.ymd(current_time.year(), current_time.month(), current_time.day()).and_hms(20, 0, 0);
-    let night_start = Local.ymd(current_time.year(), current_time.month(), current_time.day()).and_hms(22, 0, 0);
+    let night_to_day_start = generate_datetime(current_time, NIGHT_TO_DAY_START);
+    let day_start = generate_datetime(current_time, DAY_START);
+    let day_to_evening_start = generate_datetime(current_time, DAY_TO_EVENING_START);
+    let evening_start = generate_datetime(current_time, EVENING_START);
+    let evening_to_night_start = generate_datetime(current_time, EVENING_TO_NIGHT_START);
+    let night_start = generate_datetime(current_time, NIGHT_START);
 
     // Phase checks.
     if current_time >= night_start || current_time <= night_to_day_start {
